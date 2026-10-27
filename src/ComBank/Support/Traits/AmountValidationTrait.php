@@ -19,6 +19,8 @@ trait AmountValidationTrait
      */
     public function validateAmount(float $amount):void
     {
-        
+        if ($amount <= 0){
+            throw new ZeroAmountException("La cantidad menor de 0 no es posible");
+        }
     }
 }
