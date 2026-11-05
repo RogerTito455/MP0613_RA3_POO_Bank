@@ -17,8 +17,7 @@ class InterestTransaction extends BaseTransaction implements BankTransactionInte
     }
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
-       
-            return ($bankAccount->getBalance() + ($bankAccount->getBalance() * $bankAccount->getOverDraft()->getInterestRate() / 100));
+        return ($bankAccount->getBalance() + ($bankAccount->getBalance() * $bankAccount->getOverDraft()->getInterestRate() / 100));
     }
     public function getTransactionInfo(): string
     {
