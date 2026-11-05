@@ -17,12 +17,12 @@ use ComBank\Exceptions\ZeroAmountException;
 
 require_once 'bootstrap.php';
 
-
 //---[Bank account 1]---/
 // create a new account1 with balance 400
-$bankAccount1 = new BankAccount(400.0);
 pl('--------- [Start testing bank account #1, No overdraft] --------');
 try {
+    $bankAccount1 = new BankAccount(400.0, "crtito@gmail.com");
+    pl($bankAccount1->getEmail());
     // show balance account
     pl('Balance account: ' . $bankAccount1->getBalance());
     // close account
@@ -57,11 +57,14 @@ pl('My account is now closed.');
 
 
 
-$bankAccount2 = new BankAccount(200.0);
-$bankAccount2->applyOverDraft(new SilverOverdraft());
+
 //---[Bank account 2]---/
 pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
 try {
+    $bankAccount2 = new BankAccount(200.0, "crtito@gmail.com");
+    $bankAccount2->applyOverDraft(new SilverOverdraft());
+    pl($bankAccount2->getEmail());
+
     // show balance account
     pl('Balance account: ' . $bankAccount2->getBalance());
 
@@ -86,7 +89,8 @@ try {
 } catch (ZeroAmountException $e) {
     pl($e->getMessage());
 } catch (BankAccountException $e) {
-    pl($e->getMessage());
+    pl('Error: ' . $e->getMessage());
+    exit;
 } catch (FailedTransactionException $e) {
     pl('Error transaction: ' . $e->getMessage());
 }
@@ -111,3 +115,4 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
