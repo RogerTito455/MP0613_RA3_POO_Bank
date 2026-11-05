@@ -81,8 +81,7 @@ class BankAccount implements BankAccountInterface
             throw new BankAccountException("Cannot perform on a closed account");
         }
         //Aplicar transaccion applyTransaction de la clase deposit
-        $this->validateAmount($bankTransaction->getAmount());
-
+        //El importe ya se valida al crear la transacción (BaseTransaction::__construct)
         try {
             $newBalance = $bankTransaction->applyTransaction($this);
         } catch (InvalidOverdraftFundsException $e) {

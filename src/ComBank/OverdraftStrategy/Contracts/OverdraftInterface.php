@@ -12,4 +12,5 @@ interface OverdraftInterface
     
     public function isGrantOverDraftFunds(float $draft):bool;
     public function getOverDraftFundsAmount():float;
+    public function getInterestRate() : int;
 }
