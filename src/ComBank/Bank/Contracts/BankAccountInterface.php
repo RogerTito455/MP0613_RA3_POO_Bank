@@ -34,6 +34,10 @@ interface BankAccountInterface
     public function applyOverDraft(OverdraftInterface $overdraftInterface);
     //Función para setBalance
     public function setBalance(float $balance);
+    //Function get & set email
+    public function getEmail(): string;
+
+    public function setEmail(string $email) : void;
 
 
 

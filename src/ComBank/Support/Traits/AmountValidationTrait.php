@@ -1,4 +1,6 @@
-<?php namespace ComBank\Support\Traits;
+<?php
+
+namespace ComBank\Support\Traits;
 
 /**
  * Created by VS Code.
@@ -7,6 +9,7 @@
  * Time: 2:35 PM
  */
 
+use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Exceptions\ZeroAmountException;
 
@@ -17,10 +20,16 @@ trait AmountValidationTrait
      * @throws InvalidArgsException
      * @throws ZeroAmountException
      */
-    public function validateAmount(float $amount):void
+    public function validateAmount(float $amount): void
     {
-        if ($amount <= 0){
+        if ($amount <= 0) {
             throw new ZeroAmountException("La cantidad menor de 0 no es posible");
+        }
+    }
+    private function validateEmail(string $email): void
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new BankAccountException("Invalid email format");
         }
     }
 }

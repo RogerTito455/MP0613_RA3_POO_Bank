@@ -21,21 +21,36 @@ use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 use Override;
-use PhpParser\Node\Expr\FuncCall;
 
 class BankAccount implements BankAccountInterface
 {
     use AmountValidationTrait;
 
+
     private float $balance;
     private bool $status;
     private OverdraftInterface $overdraft;
+    private string $email;
 
-    public function __construct(float $balance)
+    public function __construct(float $balance, string $email)
     {
         $this->balance = $balance;
         $this->status = true;
         $this->overdraft = new NoOverdraft;
+        $this->validateEmail($email);
+        $this->email = $email;
+    }
+
+    //Get Email
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    //Set email 
+    public function setEmail(string $email): void
+    {
+        $this->validateEmail($email);
+        $this->email = $email;
     }
 
     //Declaramos las variables para utilizar ahora overdraft
