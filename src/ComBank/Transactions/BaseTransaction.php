@@ -30,7 +30,7 @@ abstract class BaseTransaction
         return $this->amount;
     }
 
-    public function setAmount($amount)
+    public function setAmount($amount) 
     {
         $this->amount = $amount;
     }

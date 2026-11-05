@@ -16,6 +16,7 @@ use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\OverdraftStrategy\GoldOverdraft;
 use ComBank\Transactions\InterestTransaction;
+use ComBank\Transactions\TransferTransaction;
 
 require_once 'bootstrap.php';
 
@@ -128,7 +129,7 @@ try {
     pl($bankAccount3->getEmail());
     $bankAccount3->transaction(new InterestTransaction());
     // show balance account
-    pl('Balance account: ' . $bankAccount3->getBalance());
+    pl('Balance account: ' . $bankAccount3->getBalance() + $bankAccount3->getOverdraft()->getOverDraftFundsAmount());
 
     // deposit +100
     pl('Doing transaction deposit (+100) with current balance ' . $bankAccount3->getBalance());
@@ -177,3 +178,60 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
+//Account 1 & 2 Testing exam final
+//Testing
+pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
+try {
+    //Sample 1
+    $bankAccount0 = new BankAccount(500, "crtito@gmail.com");
+    $bankAccount01 = new BankAccount(200, "crtito1@gmail.com");
+
+    //OverDraft 500
+    $bankAccount0->applyOverDraft(new GoldOverdraft());
+    pl($bankAccount0->getEmail());
+    // show balance account
+
+    pl('Source Account Balance: €' . $bankAccount0->getBalance());
+    pl('Destination Account Balance: €' . $bankAccount01->getBalance());
+    //Transaction
+    $bankAccount0->transaction(new TransferTransaction(100, $bankAccount01));
+    pl('Transfer Amount: €100.00');
+    //After Transaction
+    pl('Source Balance After Transaction: €' . $bankAccount0->getBalance());
+    pl('Destination Balance After Transaction: €' . $bankAccount01->getBalance());
+
+} catch (ZeroAmountException $e) {
+    pl($e->getMessage());
+} catch (BankAccountException $e) {
+    pl('Error: ' . $e->getMessage());
+    exit;
+} catch (FailedTransactionException $e) {
+    pl('Error transaction: ' . $e->getMessage());
+}
+
+
+//Testing
+//---[Bank account 2]---/
+pl('--------- [Start testing bank account #2, Silver overdraft (100.0 funds)] --------');
+try {
+    $bankAccount6 = new BankAccount(50, "crtito@gmail.com");
+    $bankAccount7 = new BankAccount(200, "crtito@gmail.com");
+    pl('Source Account Balance: €' . $bankAccount6->getBalance());
+    pl('Destination Account Balance: €' . $bankAccount7->getBalance());
+    //Transaction
+    $bankAccount6->transaction(new TransferTransaction(100, $bankAccount7));
+    pl('Transfer Amount: €100.00');
+    //After Transaction
+    pl('Source Balance After Transaction: €' . $bankAccount6->getBalance());
+    pl('Destination Balance After Transaction: €' . $bankAccount7->getBalance());
+   
+} catch (ZeroAmountException $e) {
+    pl($e->getMessage());
+} catch (BankAccountException $e) {
+    pl('Error: ' . $e->getMessage());
+    exit;
+} catch (FailedTransactionException $e) {
+    pl($e->getMessage());
+}
+
